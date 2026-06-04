@@ -63,9 +63,9 @@ export default function Home() {
             <div className="absolute -left-6 -top-6 h-24 w-24 rounded-full bg-brand-sunny/40 blur-2xl" />
             <div className="absolute -bottom-6 -right-6 h-32 w-32 rounded-full bg-brand-teal/30 blur-2xl" />
             <img
-              src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=800"
-              alt="Painter at work"
-              className="relative rounded-xl2 shadow-soft"
+              src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=800"
+              alt="Painter painting a wall with a roller"
+              className="relative h-full max-h-[420px] w-full rounded-xl2 object-cover shadow-soft"
             />
           </div>
         </div>
