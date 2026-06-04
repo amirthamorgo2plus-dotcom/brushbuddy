@@ -180,6 +180,9 @@ create policy "painter writes quote" on quotes for insert with check (
 create policy "painter edits quote" on quotes for update using (
   exists (select 1 from painter_profiles pp where pp.id = quotes.painter_id and pp.user_id = auth.uid())
 );
+create policy "customer updates job quotes" on quotes for update using (
+  auth.uid() = (select customer_id from jobs where jobs.id = quotes.job_id)
+);
 
 -- BOOKINGS: only the two parties.
 create policy "booking parties" on bookings for all

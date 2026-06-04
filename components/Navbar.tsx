@@ -6,30 +6,52 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { signOut } from "@/lib/auth";
 
-const links = [
+const baseLinks = [
   { href: "/painters", label: "Find Painters" },
   { href: "/jobs", label: "Open Jobs" },
   { href: "/post-job", label: "Post a Job" },
-  { href: "/dashboard", label: "For Painters" },
 ];
 
 export default function Navbar() {
   const path = usePathname();
   const router = useRouter();
   const [email, setEmail] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
     if (!supabase) return;
-    supabase.auth.getSession().then(({ data }) => setEmail(data.session?.user.email ?? null));
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) =>
-      setEmail(session?.user.email ?? null)
-    );
+
+    async function loadRole(uid: string | undefined) {
+      if (!uid || !supabase) { setRole(null); return; }
+      const { data } = await supabase.from("profiles").select("role").eq("id", uid).maybeSingle();
+      setRole(data?.role ?? "customer");
+    }
+
+    supabase.auth.getSession().then(({ data }) => {
+      setEmail(data.session?.user.email ?? null);
+      loadRole(data.session?.user.id);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      setEmail(session?.user.email ?? null);
+      loadRole(session?.user.id);
+    });
     return () => sub.subscription.unsubscribe();
   }, []);
+
+  // Add a personal link based on who's logged in.
+  const links = [...baseLinks];
+  if (email) {
+    if (role === "painter") links.push({ href: "/my-work", label: "My Work" });
+    else links.push({ href: "/my-jobs", label: "My Jobs" });
+    if (role === "admin") links.push({ href: "/admin", label: "Admin" });
+  } else {
+    links.push({ href: "/dashboard", label: "For Painters" });
+  }
 
   async function handleLogout() {
     await signOut();
     setEmail(null);
+    setRole(null);
     router.push("/");
   }
 
