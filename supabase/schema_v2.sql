@@ -21,6 +21,7 @@ create table painter_profiles (
   user_id       uuid unique references profiles(id) on delete set null, -- null = no login (admin added)
   name          text not null,
   city          text,
+  area          text,            -- locality within the city (e.g. "RS Puram")
   phone         text,            -- so you can contact painters who have no account
   photo         text,
   about         text,

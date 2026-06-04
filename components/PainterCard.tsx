@@ -30,7 +30,9 @@ export default function PainterCard({ painter }: { painter: Painter }) {
           />
           <div>
             <h3 className="font-bold text-brand-ink">{painter.name}</h3>
-            <p className="text-xs text-brand-ink/60">📍 {painter.city}</p>
+            <p className="text-xs text-brand-ink/60">
+              📍 {painter.area ? `${painter.area}, ` : ""}{painter.city}
+            </p>
           </div>
         </div>
 

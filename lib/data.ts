@@ -1,6 +1,7 @@
 import { Painter, Review, Job } from "./types";
 
-// Friendly sample data so the app looks alive before Supabase is connected.
+// Friendly sample data so the app looks alive before real painters sign up.
+// Launching in Coimbatore first, with nearby Tamil Nadu cities ready.
 
 export const SKILLS = [
   "Interior",
@@ -11,14 +12,42 @@ export const SKILLS = [
   "Wall Putty",
 ];
 
-export const CITIES = ["Bengaluru", "Chennai", "Hyderabad", "Mumbai", "Pune"];
+export const CITIES = ["Coimbatore", "Tiruppur", "Erode", "Salem"];
+
+// Local areas (neighbourhoods) within each city. Coimbatore is our launch city.
+export const AREAS: Record<string, string[]> = {
+  Coimbatore: [
+    "RS Puram",
+    "Gandhipuram",
+    "Peelamedu",
+    "Saravanampatti",
+    "Singanallur",
+    "Ramanathapuram",
+    "Vadavalli",
+    "Ganapathy",
+    "Race Course",
+    "Saibaba Colony",
+    "Ukkadam",
+    "Thudiyalur",
+    "Kuniyamuthur",
+    "Sulur",
+  ],
+  Tiruppur: [],
+  Erode: [],
+  Salem: [],
+};
+
+export function areasFor(city: string): string[] {
+  return AREAS[city] ?? [];
+}
 
 export const painters: Painter[] = [
   {
     id: "p1",
     name: "Ravi Kumar",
     photo: "https://i.pravatar.cc/300?img=12",
-    city: "Bengaluru",
+    city: "Coimbatore",
+    area: "RS Puram",
     skills: ["Interior", "Texture", "Wall Putty"],
     about:
       "I have painted homes for 8 years. I keep the place clean and finish on time. Smooth walls are my speciality!",
@@ -37,7 +66,8 @@ export const painters: Painter[] = [
     id: "p2",
     name: "Anjali Sharma",
     photo: "https://i.pravatar.cc/300?img=45",
-    city: "Chennai",
+    city: "Coimbatore",
+    area: "Gandhipuram",
     skills: ["Interior", "Wood Polish"],
     about:
       "Friendly painter who loves bright happy colors. I help you pick shades that suit your home.",
@@ -55,7 +85,8 @@ export const painters: Painter[] = [
     id: "p3",
     name: "Mohammed Irfan",
     photo: "https://i.pravatar.cc/300?img=33",
-    city: "Hyderabad",
+    city: "Coimbatore",
+    area: "Peelamedu",
     skills: ["Exterior", "Waterproofing"],
     about:
       "Outdoor and waterproofing expert. Your walls stay strong in rain and sun. Safe and tidy work.",
@@ -73,7 +104,8 @@ export const painters: Painter[] = [
     id: "p4",
     name: "Suresh Patil",
     photo: "https://i.pravatar.cc/300?img=8",
-    city: "Pune",
+    city: "Coimbatore",
+    area: "Saravanampatti",
     skills: ["Interior", "Exterior", "Texture"],
     about:
       "All-round painter for homes and shops. Fair price, no hidden charges. I explain every step.",
@@ -90,7 +122,8 @@ export const painters: Painter[] = [
     id: "p5",
     name: "Lakshmi Nair",
     photo: "https://i.pravatar.cc/300?img=20",
-    city: "Bengaluru",
+    city: "Coimbatore",
+    area: "Vadavalli",
     skills: ["Interior", "Wall Putty", "Wood Polish"],
     about:
       "Neat finishing and on-time work. I treat your home like my own. Many happy families!",
@@ -108,7 +141,7 @@ export const painters: Painter[] = [
     id: "p6",
     name: "Deepak Verma",
     photo: "https://i.pravatar.cc/300?img=15",
-    city: "Mumbai",
+    city: "Tiruppur",
     skills: ["Exterior", "Texture", "Waterproofing"],
     about:
       "Big building and society work. Strong team, fast work, good safety. Free site visit first.",
@@ -184,7 +217,7 @@ export const jobs: Job[] = [
     id: "j1",
     title: "Paint my 2 BHK flat",
     type: "Interior",
-    city: "Bengaluru",
+    city: "Coimbatore",
     area: "2 BHK (~900 sq ft)",
     budget: 18000,
     details: "Need full interior painting. Walls have small cracks. Want light colors.",
@@ -196,7 +229,7 @@ export const jobs: Job[] = [
     id: "j2",
     title: "Outside wall + waterproofing",
     type: "Exterior",
-    city: "Hyderabad",
+    city: "Coimbatore",
     area: "Independent house",
     budget: 35000,
     details: "Outside walls need fresh paint and terrace waterproofing before rains.",
@@ -208,7 +241,7 @@ export const jobs: Job[] = [
     id: "j3",
     title: "Office hall texture wall",
     type: "Texture",
-    city: "Chennai",
+    city: "Coimbatore",
     area: "Office hall (1 wall)",
     budget: 12000,
     details: "One feature wall with texture design for our office reception.",

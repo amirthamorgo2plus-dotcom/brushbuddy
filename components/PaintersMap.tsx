@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Painter } from "@/lib/types";
-import { painterLatLng, INDIA_CENTER } from "@/lib/geo";
+import { painterLatLng, COIMBATORE_CENTER } from "@/lib/geo";
 
 // A friendly coral map pin (avoids Leaflet's broken default icon paths).
 const pin = L.divIcon({
@@ -22,8 +22,8 @@ const pin = L.divIcon({
 });
 
 export default function PaintersMap({ painters }: { painters: Painter[] }) {
-  const center = painters.length ? painterLatLng(painters[0]) : INDIA_CENTER;
-  const zoom = painters.length ? 11 : 5;
+  const center = painters.length ? painterLatLng(painters[0]) : COIMBATORE_CENTER;
+  const zoom = painters.length ? 12 : 11;
 
   return (
     <MapContainer
@@ -50,7 +50,7 @@ export default function PaintersMap({ painters }: { painters: Painter[] }) {
                 />
                 <div style={{ fontWeight: 700 }}>{p.name}</div>
                 <div style={{ fontSize: 12, color: "#666" }}>
-                  📍 {p.city} · ⭐ {p.rating.toFixed(1)}
+                  📍 {p.area ? `${p.area}, ` : ""}{p.city} · ⭐ {p.rating.toFixed(1)}
                 </div>
                 <div style={{ fontSize: 12, marginTop: 2 }}>From ₹{p.pricePerDay}/day</div>
                 <a

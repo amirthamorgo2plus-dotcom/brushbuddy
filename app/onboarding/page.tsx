@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { SKILLS, CITIES } from "@/lib/data";
+import { SKILLS, CITIES, areasFor } from "@/lib/data";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
 
 export default function Onboarding() {
@@ -18,6 +18,7 @@ export default function Onboarding() {
   const [form, setForm] = useState({
     name: "",
     city: CITIES[0],
+    area: "",
     about: "",
     skills: [] as string[],
     pricePerDay: "",
@@ -55,6 +56,7 @@ export default function Onboarding() {
         ...f,
         name: pp?.name ?? prof?.name ?? f.name,
         city: pp?.city ?? prof?.city ?? f.city,
+        area: pp?.area ?? f.area,
         about: pp?.about ?? f.about,
         skills: pp?.skills ?? f.skills,
         pricePerDay: pp?.price_per_day ? String(pp.price_per_day) : f.pricePerDay,
@@ -93,6 +95,7 @@ export default function Onboarding() {
           user_id: userId,
           name: form.name,
           city: form.city,
+          area: form.area || null,
           photo: form.photo,
           about: form.about,
           skills: form.skills,
@@ -160,7 +163,11 @@ export default function Onboarding() {
 
         <div className="grid grid-cols-2 gap-4">
           <Field label="Your city">
-            <select value={form.city} onChange={(e) => set("city", e.target.value)} className="ob-input">
+            <select
+              value={form.city}
+              onChange={(e) => { set("city", e.target.value); set("area", ""); }}
+              className="ob-input"
+            >
               {CITIES.map((c) => <option key={c}>{c}</option>)}
             </select>
           </Field>
@@ -168,6 +175,15 @@ export default function Onboarding() {
             <input type="number" value={form.pricePerDay} onChange={(e) => set("pricePerDay", e.target.value)} placeholder="e.g. 1000" className="ob-input" />
           </Field>
         </div>
+
+        {areasFor(form.city).length > 0 && (
+          <Field label="Your area (locality)">
+            <select value={form.area} onChange={(e) => set("area", e.target.value)} className="ob-input">
+              <option value="">Select your area</option>
+              {areasFor(form.city).map((a) => <option key={a}>{a}</option>)}
+            </select>
+          </Field>
+        )}
 
         <Field label="What work do you do?">
           <div className="flex flex-wrap gap-2">

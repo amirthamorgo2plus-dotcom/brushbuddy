@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SKILLS, CITIES } from "@/lib/data";
+import { SKILLS, CITIES, areasFor } from "@/lib/data";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
@@ -11,6 +11,7 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
   const [form, setForm] = useState({
     name: "",
     city: CITIES[0],
+    area: "",
     phone: "",
     pricePerDay: "",
     skills: [] as string[],
@@ -29,6 +30,7 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
     const { error: insErr } = await supabase.from("painter_profiles").insert({
       name: form.name,
       city: form.city,
+      area: form.area || null,
       phone: form.phone,
       price_per_day: form.pricePerDay ? Number(form.pricePerDay) : 0,
       skills: form.skills,
@@ -41,7 +43,7 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
       setError(insErr.message);
       return;
     }
-    setForm({ name: "", city: CITIES[0], phone: "", pricePerDay: "", skills: [], photo: "", about: "" });
+    setForm({ name: "", city: CITIES[0], area: "", phone: "", pricePerDay: "", skills: [], photo: "", about: "" });
     setOpen(false);
     onAdded();
   }
@@ -73,10 +75,26 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
           <input value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="e.g. 98765 43210" className="ap-input" />
         </Field>
         <Field label="City">
-          <select value={form.city} onChange={(e) => set("city", e.target.value)} className="ap-input">
+          <select
+            value={form.city}
+            onChange={(e) => { set("city", e.target.value); set("area", ""); }}
+            className="ap-input"
+          >
             {CITIES.map((c) => <option key={c}>{c}</option>)}
           </select>
         </Field>
+        {areasFor(form.city).length > 0 ? (
+          <Field label="Area (locality)">
+            <select value={form.area} onChange={(e) => set("area", e.target.value)} className="ap-input">
+              <option value="">Select area</option>
+              {areasFor(form.city).map((a) => <option key={a}>{a}</option>)}
+            </select>
+          </Field>
+        ) : (
+          <Field label="Area (optional)">
+            <input value={form.area} onChange={(e) => set("area", e.target.value)} placeholder="Locality" className="ap-input" />
+          </Field>
+        )}
         <Field label="Day rate (₹)">
           <input type="number" value={form.pricePerDay} onChange={(e) => set("pricePerDay", e.target.value)} placeholder="e.g. 1000" className="ap-input" />
         </Field>

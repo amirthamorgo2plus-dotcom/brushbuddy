@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { painters as samplePainters, SKILLS, CITIES } from "@/lib/data";
+import { painters as samplePainters, SKILLS, CITIES, areasFor } from "@/lib/data";
 import { Painter } from "@/lib/types";
 import { fetchPainters } from "@/lib/painters";
 import PainterCard from "@/components/PainterCard";
@@ -20,6 +20,7 @@ const PaintersMap = dynamic(() => import("@/components/PaintersMap"), {
 export default function PaintersPage() {
   const [q, setQ] = useState("");
   const [city, setCity] = useState("All");
+  const [area, setArea] = useState("All");
   const [skill, setSkill] = useState("All");
   const [sort, setSort] = useState("rating");
   const [maxPrice, setMaxPrice] = useState(2000);
@@ -44,16 +45,19 @@ export default function PaintersPage() {
         p.name.toLowerCase().includes(q.toLowerCase()) ||
         p.skills.join(" ").toLowerCase().includes(q.toLowerCase());
       const matchCity = city === "All" || p.city === city;
+      const matchArea = area === "All" || p.area === area;
       const matchSkill = skill === "All" || p.skills.includes(skill);
       const matchPrice = p.pricePerDay <= maxPrice;
       const matchVerified = !verifiedOnly || p.verified;
-      return matchQ && matchCity && matchSkill && matchPrice && matchVerified;
+      return matchQ && matchCity && matchArea && matchSkill && matchPrice && matchVerified;
     });
     if (sort === "rating") out = [...out].sort((a, b) => b.rating - a.rating);
     if (sort === "low") out = [...out].sort((a, b) => a.pricePerDay - b.pricePerDay);
     if (sort === "high") out = [...out].sort((a, b) => b.pricePerDay - a.pricePerDay);
     return out;
-  }, [painters, q, city, skill, sort, maxPrice, verifiedOnly]);
+  }, [painters, q, city, area, skill, sort, maxPrice, verifiedOnly]);
+
+  const cityAreas = city !== "All" ? areasFor(city) : [];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -88,7 +92,15 @@ export default function PaintersPage() {
           className="w-full rounded-xl border border-orange-100 px-4 py-3 outline-none focus:border-brand-coral"
         />
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <Select label="City" value={city} setValue={setCity} options={["All", ...CITIES]} />
+          <Select
+            label="City"
+            value={city}
+            setValue={(v) => { setCity(v); setArea("All"); }}
+            options={["All", ...CITIES]}
+          />
+          {cityAreas.length > 0 && (
+            <Select label="Area" value={area} setValue={setArea} options={["All", ...cityAreas]} />
+          )}
           <Select label="Work type" value={skill} setValue={setSkill} options={["All", ...SKILLS]} />
           <Select
             label="Sort by"

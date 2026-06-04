@@ -10,6 +10,7 @@ export function mapPainter(row: any): Painter {
     name: row.name ?? "Painter",
     photo: row.photo || "https://i.pravatar.cc/300",
     city: row.city ?? "",
+    area: row.area ?? undefined,
     skills: row.skills ?? [],
     about: row.about ?? "",
     pricePerDay: row.price_per_day ?? 0,

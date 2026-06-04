@@ -5,6 +5,7 @@ export type Painter = {
   name: string;
   photo: string;
   city: string;
+  area?: string;           // locality within the city (e.g. "RS Puram")
   skills: string[];        // e.g. "Interior", "Exterior", "Waterproofing"
   about: string;
   pricePerDay: number;     // starting day rate in ₹
