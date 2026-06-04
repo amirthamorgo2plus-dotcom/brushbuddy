@@ -1,0 +1,153 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
+import { isAdmin } from "@/lib/auth";
+import AddPainterForm from "@/components/AddPainterForm";
+
+type Row = any;
+
+export default function Admin() {
+  const [allowed, setAllowed] = useState<boolean | null>(null);
+  const [painters, setPainters] = useState<Row[]>([]);
+  const [jobs, setJobs] = useState<Row[]>([]);
+  const [reviews, setReviews] = useState<Row[]>([]);
+
+  const load = useCallback(async () => {
+    if (!supabase) return;
+    const [p, j, r] = await Promise.all([
+      supabase.from("painter_profiles").select("*").order("created_at", { ascending: false }),
+      supabase.from("jobs").select("*").eq("status", "open"),
+      supabase.from("reviews").select("*").order("created_at", { ascending: false }),
+    ]);
+    setPainters(p.data ?? []);
+    setJobs(j.data ?? []);
+    setReviews(r.data ?? []);
+  }, []);
+
+  useEffect(() => {
+    if (!isSupabaseReady) { setAllowed(false); return; }
+    isAdmin().then((ok) => {
+      setAllowed(ok);
+      if (ok) load();
+    });
+  }, [load]);
+
+  async function approve(id: string, verified: boolean) {
+    if (!supabase) return;
+    await supabase.from("painter_profiles").update({ verified }).eq("id", id);
+    load();
+  }
+
+  async function removePainter(id: string) {
+    if (!supabase) return;
+    await supabase.from("painter_profiles").delete().eq("id", id);
+    load();
+  }
+
+  if (allowed === null) {
+    return <div className="mx-auto max-w-5xl px-4 py-20 text-center text-brand-ink/60">Loading...</div>;
+  }
+
+  if (!allowed) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-20 text-center">
+        <div className="text-5xl">🔒</div>
+        <h1 className="mt-3 text-2xl font-extrabold text-brand-ink">Admins only</h1>
+        <p className="mt-2 text-brand-ink/60">
+          You need an admin account to see this page. Log in with your admin email,
+          and make sure your profile role is set to <b>admin</b> in Supabase.
+        </p>
+        <Link href="/login" className="mt-5 inline-block rounded-full bg-gradient-to-r from-brand-coral to-brand-violet px-6 py-3 font-bold text-white shadow-glow">
+          Log in
+        </Link>
+      </div>
+    );
+  }
+
+  const pending = painters.filter((p) => !p.verified);
+  const stats = [
+    { label: "Painters", value: painters.length, icon: "👷" },
+    { label: "Open jobs", value: jobs.length, icon: "💼" },
+    { label: "Reviews", value: reviews.length, icon: "⭐" },
+    { label: "To verify", value: pending.length, icon: "🔎" },
+  ];
+
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-10">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-3xl font-extrabold text-brand-ink">Admin</h1>
+          <p className="mt-1 text-brand-ink/60">Keep the platform safe and friendly.</p>
+        </div>
+        <AddPainterForm onAdded={load} />
+      </div>
+
+      <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+        {stats.map((s) => (
+          <div key={s.label} className="rounded-xl2 border border-orange-100 bg-white p-5 shadow-soft">
+            <div className="text-2xl">{s.icon}</div>
+            <div className="mt-2 text-2xl font-extrabold text-brand-ink">{s.value}</div>
+            <div className="text-sm text-brand-ink/60">{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* All painters */}
+      <h2 className="mt-8 text-xl font-extrabold text-brand-ink">All painters</h2>
+      <div className="mt-4 space-y-3">
+        {painters.length === 0 && (
+          <p className="rounded-xl2 border border-orange-100 bg-white p-6 text-center text-brand-ink/60">
+            No painters yet. Click "Add a painter" to list your first one.
+          </p>
+        )}
+        {painters.map((p) => (
+          <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl2 border border-orange-100 bg-white p-4 shadow-soft">
+            <Link href={`/painters/${p.id}`} className="flex items-center gap-3">
+              <img src={p.photo || "https://i.pravatar.cc/100"} alt={p.name} className="h-12 w-12 rounded-full object-cover" />
+              <div>
+                <p className="font-bold text-brand-ink">
+                  {p.name}{" "}
+                  {p.verified
+                    ? <span className="rounded-full bg-brand-teal px-2 py-0.5 text-xs font-bold text-white">✓ Verified</span>
+                    : <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">Pending</span>}
+                  {!p.user_id && <span className="ml-1 text-xs text-brand-ink/40">(no account)</span>}
+                </p>
+                <p className="text-sm text-brand-ink/60">📍 {p.city || "—"} · {(p.skills ?? []).join(", ") || "no skills"} {p.phone ? `· 📞 ${p.phone}` : ""}</p>
+              </div>
+            </Link>
+            <div className="flex gap-2">
+              {p.verified ? (
+                <button onClick={() => approve(p.id, false)} className="rounded-full border border-orange-200 px-4 py-2 text-sm font-bold text-brand-ink/60">
+                  Un-verify
+                </button>
+              ) : (
+                <button onClick={() => approve(p.id, true)} className="rounded-full bg-brand-teal px-4 py-2 text-sm font-bold text-white">
+                  Approve
+                </button>
+              )}
+              <button onClick={() => removePainter(p.id)} className="rounded-full border border-red-200 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50">
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Recent reviews */}
+      <h2 className="mt-8 text-xl font-extrabold text-brand-ink">Recent reviews</h2>
+      <div className="mt-4 space-y-3">
+        {reviews.length === 0 && (
+          <p className="rounded-xl2 border border-orange-100 bg-white p-6 text-center text-brand-ink/60">No reviews yet.</p>
+        )}
+        {reviews.map((r) => (
+          <div key={r.id} className="rounded-xl2 border border-orange-100 bg-white p-4 shadow-soft">
+            <p className="font-bold text-brand-ink">{r.customer_name ?? "Customer"} · {r.stars}★</p>
+            <p className="text-sm text-brand-ink/70">{r.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
