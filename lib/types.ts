@@ -13,6 +13,8 @@ export type Painter = {
   jobsDone: number;
   verified: boolean;
   portfolio: string[];     // image urls (before/after work photos)
+  lat?: number;            // map location (optional)
+  lng?: number;
 };
 
 export type Review = {

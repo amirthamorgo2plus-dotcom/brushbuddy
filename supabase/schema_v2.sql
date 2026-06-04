@@ -27,6 +27,8 @@ create table painter_profiles (
   skills        text[] default '{}',
   price_per_day integer default 0,
   verified      boolean default false,
+  lat           double precision,   -- optional precise map location
+  lng           double precision,
   rating_avg    numeric(2,1) default 0,
   rating_count  integer default 0,
   jobs_done     integer default 0,

@@ -16,6 +16,19 @@ export default function PainterProfile() {
 
   const [painter, setPainter] = useState<Painter | null | undefined>(undefined);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [isLive, setIsLive] = useState(false);
+
+  async function loadReviews(live: boolean) {
+    setReviews(live ? await fetchReviews(id) : getReviewsFor(id));
+  }
+
+  // After a new review, refresh both the list and the painter's rating.
+  async function handleReviewed() {
+    if (!isLive) return;
+    const fresh = await fetchPainter(id);
+    if (fresh) setPainter(fresh);
+    await loadReviews(true);
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -25,11 +38,8 @@ export default function PainterProfile() {
       const p = live ?? getPainter(id) ?? null;
       if (cancelled) return;
       setPainter(p);
-      if (live) {
-        setReviews(await fetchReviews(id));
-      } else {
-        setReviews(getReviewsFor(id));
-      }
+      setIsLive(!!live);
+      await loadReviews(!!live);
     })();
     return () => { cancelled = true; };
   }, [id]);
@@ -118,7 +128,7 @@ export default function PainterProfile() {
             </div>
 
             <div className="mt-6">
-              <ReviewForm painterName={painter.name} painterId={painter.id} />
+              <ReviewForm painterName={painter.name} painterId={painter.id} onSubmitted={handleReviewed} />
             </div>
           </div>
         </div>

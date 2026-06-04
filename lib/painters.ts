@@ -18,6 +18,8 @@ export function mapPainter(row: any): Painter {
     jobsDone: row.jobs_done ?? 0,
     verified: row.verified ?? false,
     portfolio: (row.portfolio_items ?? []).map((p: any) => p.image_url),
+    lat: row.lat ?? undefined,
+    lng: row.lng ?? undefined,
   };
 }
 
