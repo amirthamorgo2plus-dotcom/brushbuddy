@@ -128,6 +128,16 @@ alter table payments         enable row level security;
 alter table reviews          enable row level security;
 alter table messages         enable row level security;
 
+-- PROFILES: each user can read/create/update their OWN row.
+-- (Required so the app can read your role — including role='admin'.)
+alter table profiles enable row level security;
+drop policy if exists "own profile read"   on profiles;
+drop policy if exists "own profile insert" on profiles;
+drop policy if exists "own profile update" on profiles;
+create policy "own profile read"   on profiles for select using (auth.uid() = id);
+create policy "own profile insert" on profiles for insert with check (auth.uid() = id);
+create policy "own profile update" on profiles for update using (auth.uid() = id);
+
 -- Handy: is the current user an admin?
 -- (reads the caller's own profile row, allowed by the profiles "own read" policy)
 -- We inline this check in each policy below.
