@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import StarRating from "./StarRating";
+import ImageUpload from "./ImageUpload";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
 
 export default function ReviewForm({
@@ -21,6 +22,7 @@ export default function ReviewForm({
   const [cleanliness, setCleanliness] = useState(5);
   const [value, setValue] = useState(5);
   const [text, setText] = useState("");
+  const [photo, setPhoto] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
@@ -60,6 +62,7 @@ export default function ReviewForm({
       cleanliness,
       value,
       text,
+      photos: photo ? [photo] : [],
     });
 
     setBusy(false);
@@ -112,6 +115,11 @@ export default function ReviewForm({
         rows={3}
         className="mt-4 w-full rounded-xl border border-orange-100 p-3 text-sm outline-none focus:border-brand-coral"
       />
+
+      <div className="mt-3">
+        <p className="mb-1 text-sm font-semibold text-brand-ink/70">Add a photo (optional)</p>
+        <ImageUpload value={photo} onChange={setPhoto} folder="reviews" />
+      </div>
 
       {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
       <button

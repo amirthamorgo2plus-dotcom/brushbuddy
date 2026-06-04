@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { SKILLS, CITIES, areasFor } from "@/lib/data";
 import { supabase } from "@/lib/supabaseClient";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
   const [open, setOpen] = useState(false);
@@ -121,8 +122,8 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
       </div>
 
       <div className="mt-4 grid gap-4">
-        <Field label="Photo (link)">
-          <input value={form.photo} onChange={(e) => set("photo", e.target.value)} placeholder="https://..." className="ap-input" />
+        <Field label="Photo">
+          <ImageUpload value={form.photo} onChange={(v) => set("photo", v)} folder="painters" round />
         </Field>
         <Field label="About">
           <textarea value={form.about} onChange={(e) => set("about", e.target.value)} rows={2} placeholder="Short note about this painter..." className="ap-input" />

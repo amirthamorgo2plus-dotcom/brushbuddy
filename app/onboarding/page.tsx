@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SKILLS, CITIES, areasFor } from "@/lib/data";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function Onboarding() {
   const router = useRouter();
@@ -208,16 +209,16 @@ export default function Onboarding() {
           <textarea value={form.about} onChange={(e) => set("about", e.target.value)} rows={3} placeholder="Tell people why they'll love your work..." className="ob-input" />
         </Field>
 
-        <Field label="Your photo (link)">
-          <input value={form.photo} onChange={(e) => set("photo", e.target.value)} placeholder="https://...  (we add easy uploads soon)" className="ob-input" />
+        <Field label="Your photo">
+          <ImageUpload value={form.photo} onChange={(v) => set("photo", v)} folder="painters" round />
         </Field>
 
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Work photo 1 (link)">
-            <input value={form.work1} onChange={(e) => set("work1", e.target.value)} placeholder="https://..." className="ob-input" />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label="Work photo 1">
+            <ImageUpload value={form.work1} onChange={(v) => set("work1", v)} folder="work" />
           </Field>
-          <Field label="Work photo 2 (link)">
-            <input value={form.work2} onChange={(e) => set("work2", e.target.value)} placeholder="https://..." className="ob-input" />
+          <Field label="Work photo 2">
+            <ImageUpload value={form.work2} onChange={(v) => set("work2", v)} folder="work" />
           </Field>
         </div>
 
