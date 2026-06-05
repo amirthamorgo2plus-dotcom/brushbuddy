@@ -20,6 +20,7 @@ create table painter_profiles (
   id            uuid primary key default gen_random_uuid(),
   user_id       uuid unique references profiles(id) on delete set null, -- null = no login (admin added)
   name          text not null,
+  service       text default 'painting',  -- service category (painting, deep-cleaning, ...)
   city          text,
   area          text,            -- locality within the city (e.g. "RS Puram")
   phone         text,            -- so you can contact painters who have no account

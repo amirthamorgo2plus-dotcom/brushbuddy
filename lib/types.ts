@@ -4,6 +4,7 @@ export type Painter = {
   id: string;
   name: string;
   photo: string;
+  service: string;         // service category slug (e.g. "painting", "deep-cleaning")
   city: string;
   area?: string;           // locality within the city (e.g. "RS Puram")
   skills: string[];        // e.g. "Interior", "Exterior", "Waterproofing"
@@ -36,7 +37,8 @@ export type Review = {
 export type Job = {
   id: string;
   title: string;
-  type: string;            // Interior / Exterior / etc
+  service?: string;        // service category slug
+  type: string;            // sub-type within the service
   city: string;
   area: string;            // e.g. "2 BHK", "Office hall"
   budget: number;

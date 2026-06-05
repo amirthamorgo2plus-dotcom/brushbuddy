@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Painter } from "@/lib/types";
+import { getService } from "@/lib/services";
 import StarRating from "./StarRating";
 
 export default function PainterCard({ painter }: { painter: Painter }) {
@@ -19,6 +20,9 @@ export default function PainterCard({ painter }: { painter: Painter }) {
             ✓ Verified
           </span>
         )}
+        <span className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-brand-ink shadow">
+          {getService(painter.service)?.emoji} {getService(painter.service)?.name ?? "Service"}
+        </span>
       </div>
 
       <div className="p-4">

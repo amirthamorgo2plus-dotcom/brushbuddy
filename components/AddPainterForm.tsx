@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { SKILLS, CITIES, areasFor } from "@/lib/data";
+import { CITIES, areasFor } from "@/lib/data";
+import { SERVICES, DEFAULT_SERVICE, skillsForService } from "@/lib/services";
 import { supabase } from "@/lib/supabaseClient";
 import ImageUpload from "@/components/ImageUpload";
 
@@ -11,6 +12,7 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
+    service: DEFAULT_SERVICE,
     city: CITIES[0],
     area: "",
     phone: "",
@@ -30,6 +32,7 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
     setBusy(true);
     const { error: insErr } = await supabase.from("painter_profiles").insert({
       name: form.name,
+      service: form.service,
       city: form.city,
       area: form.area || null,
       phone: form.phone,
@@ -44,7 +47,7 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
       setError(insErr.message);
       return;
     }
-    setForm({ name: "", city: CITIES[0], area: "", phone: "", pricePerDay: "", skills: [], photo: "", about: "" });
+    setForm({ name: "", service: DEFAULT_SERVICE, city: CITIES[0], area: "", phone: "", pricePerDay: "", skills: [], photo: "", about: "" });
     setOpen(false);
     onAdded();
   }
@@ -68,8 +71,18 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
       </div>
       <p className="mt-1 text-sm text-brand-ink/60">For painters you onboard yourself. They appear on the site right away.</p>
 
+      <Field label="Service">
+        <select
+          value={form.service}
+          onChange={(e) => { set("service", e.target.value); set("skills", []); }}
+          className="ap-input"
+        >
+          {SERVICES.map((s) => <option key={s.slug} value={s.slug}>{s.emoji} {s.name}</option>)}
+        </select>
+      </Field>
+
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Field label="Painter name">
+        <Field label="Pro name">
           <input required value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Ravi Kumar" className="ap-input" />
         </Field>
         <Field label="Phone (to contact)">
@@ -104,7 +117,7 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
       <div className="mt-4">
         <span className="mb-1 block text-sm font-semibold text-brand-ink/70">Work types</span>
         <div className="flex flex-wrap gap-2">
-          {SKILLS.map((s) => (
+          {skillsForService(form.service).map((s) => (
             <button
               type="button"
               key={s}

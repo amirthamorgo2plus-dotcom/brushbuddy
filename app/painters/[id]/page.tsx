@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { getPainter, getReviewsFor } from "@/lib/data";
 import { fetchPainter, fetchReviews } from "@/lib/painters";
+import { getService } from "@/lib/services";
 import { Painter, Review } from "@/lib/types";
 import StarRating from "@/components/StarRating";
 import ReviewCard from "@/components/ReviewCard";
@@ -78,6 +79,9 @@ export default function PainterProfile() {
                   {painter.verified && (
                     <span className="rounded-full bg-brand-teal px-2.5 py-0.5 text-xs font-bold text-white">✓ Verified</span>
                   )}
+                  <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-brand-coral">
+                    {getService(painter.service)?.emoji} {getService(painter.service)?.name}
+                  </span>
                 </div>
                 <p className="text-brand-ink/60">📍 {painter.city}</p>
                 <div className="mt-1 flex items-center gap-2">

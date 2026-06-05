@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { painters } from "@/lib/data";
+import { SERVICES } from "@/lib/services";
 import PainterCard from "@/components/PainterCard";
 
 const steps = [
@@ -21,22 +22,22 @@ export default function Home() {
               ⭐ Trusted painters near you
             </span>
             <h1 className="mt-4 text-4xl font-extrabold leading-tight text-brand-ink md:text-5xl">
-              Find a painter you'll{" "}
+              Home services you'll{" "}
               <span className="bg-gradient-to-r from-brand-coral to-brand-violet bg-clip-text text-transparent">
                 love
               </span>
               .
             </h1>
             <p className="mt-4 text-lg text-brand-ink/70">
-              Real reviews. Fair prices. Friendly people. Get your home painted
-              the easy way — no stress.
+              Painting, deep cleaning, waterproofing & more — trusted local pros,
+              real reviews, fair prices. All under one roof.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/painters"
                 className="rounded-full bg-gradient-to-r from-brand-coral to-brand-violet px-7 py-3.5 font-bold text-white shadow-glow transition hover:opacity-90"
               >
-                Find a Painter
+                Find a Pro
               </Link>
               <Link
                 href="/post-job"
@@ -68,6 +69,32 @@ export default function Home() {
               className="relative h-full max-h-[420px] w-full rounded-xl2 object-cover shadow-soft"
             />
           </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <h2 className="text-center text-3xl font-extrabold text-brand-ink">
+          What do you need today?
+        </h2>
+        <p className="mt-2 text-center text-brand-ink/60">Pick a service to get started.</p>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {SERVICES.map((s) => (
+            <Link
+              key={s.slug}
+              href={`/painters?service=${s.slug}`}
+              className="group rounded-xl2 border border-orange-100 bg-white p-6 text-center shadow-soft transition hover:-translate-y-1 hover:shadow-glow"
+            >
+              <div className={`mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br ${s.gradient} text-3xl shadow-glow`}>
+                {s.emoji}
+              </div>
+              <h3 className="mt-4 text-lg font-bold text-brand-ink">{s.name}</h3>
+              <p className="mt-1 text-sm text-brand-ink/60">{s.tagline}</p>
+              <span className="mt-3 inline-block text-sm font-bold text-brand-coral opacity-0 transition group-hover:opacity-100">
+                Find pros →
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
 

@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { signOut } from "@/lib/auth";
 
 const baseLinks = [
-  { href: "/painters", label: "Find Painters" },
+  { href: "/painters", label: "Find Pros" },
   { href: "/jobs", label: "Open Jobs" },
   { href: "/post-job", label: "Post a Job" },
 ];
@@ -45,7 +45,7 @@ export default function Navbar() {
     else links.push({ href: "/my-jobs", label: "My Jobs" });
     if (role === "admin") links.push({ href: "/admin", label: "Admin" });
   } else {
-    links.push({ href: "/dashboard", label: "For Painters" });
+    links.push({ href: "/dashboard", label: "Join as a Pro" });
   }
 
   async function handleLogout() {

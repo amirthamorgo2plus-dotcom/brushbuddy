@@ -9,6 +9,7 @@ export function mapPainter(row: any): Painter {
     id: row.id,
     name: row.name ?? "Painter",
     photo: row.photo || "https://i.pravatar.cc/300",
+    service: row.service ?? "painting",
     city: row.city ?? "",
     area: row.area ?? undefined,
     skills: row.skills ?? [],

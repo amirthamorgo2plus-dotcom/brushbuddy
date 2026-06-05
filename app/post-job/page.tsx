@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SKILLS, CITIES } from "@/lib/data";
+import { CITIES } from "@/lib/data";
+import { SERVICES, DEFAULT_SERVICE, skillsForService } from "@/lib/services";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
 
 export default function PostJob() {
@@ -13,7 +14,8 @@ export default function PostJob() {
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     title: "",
-    type: SKILLS[0],
+    service: DEFAULT_SERVICE,
+    type: skillsForService(DEFAULT_SERVICE)[0],
     city: CITIES[0],
     area: "",
     budget: "",
@@ -43,6 +45,7 @@ export default function PostJob() {
     const { error: insErr } = await supabase.from("jobs").insert({
       customer_id: s.session.user.id,
       title: form.title,
+      service: form.service,
       type: form.type,
       city: form.city,
       area: form.area,
@@ -88,6 +91,26 @@ export default function PostJob() {
         onSubmit={handleSubmit}
         className="mt-6 space-y-4 rounded-xl2 border border-orange-100 bg-white p-6 shadow-soft"
       >
+        <Field label="Which service?">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {SERVICES.map((s) => (
+              <button
+                type="button"
+                key={s.slug}
+                onClick={() => setForm({ ...form, service: s.slug, type: skillsForService(s.slug)[0] })}
+                className={`rounded-xl border p-3 text-center text-sm font-bold transition ${
+                  form.service === s.slug
+                    ? "border-brand-coral bg-orange-50 text-brand-coral"
+                    : "border-orange-100 text-brand-ink/60 hover:bg-orange-50"
+                }`}
+              >
+                <div className="text-2xl">{s.emoji}</div>
+                {s.name}
+              </button>
+            ))}
+          </div>
+        </Field>
+
         <Field label="What do you need?">
           <input
             required
@@ -101,7 +124,7 @@ export default function PostJob() {
         <div className="grid grid-cols-2 gap-4">
           <Field label="Type of work">
             <select value={form.type} onChange={(e) => set("type", e.target.value)} className="input">
-              {SKILLS.map((s) => (
+              {skillsForService(form.service).map((s) => (
                 <option key={s}>{s}</option>
               ))}
             </select>

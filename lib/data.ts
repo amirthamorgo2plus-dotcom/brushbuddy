@@ -3,14 +3,8 @@ import { Painter, Review, Job } from "./types";
 // Friendly sample data so the app looks alive before real painters sign up.
 // Launching in Coimbatore first, with nearby Tamil Nadu cities ready.
 
-export const SKILLS = [
-  "Interior",
-  "Exterior",
-  "Texture",
-  "Waterproofing",
-  "Wood Polish",
-  "Wall Putty",
-];
+// Kept for any painting-specific use; services define their own sub-types now.
+export const SKILLS = ["Interior", "Exterior", "Texture", "Wood Polish", "Wall Putty"];
 
 export const CITIES = ["Coimbatore", "Tiruppur", "Erode", "Salem"];
 
@@ -46,6 +40,7 @@ export const painters: Painter[] = [
     id: "p1",
     name: "Ravi Kumar",
     photo: "https://i.pravatar.cc/300?img=12",
+    service: "painting",
     city: "Coimbatore",
     area: "RS Puram",
     skills: ["Interior", "Texture", "Wall Putty"],
@@ -66,6 +61,7 @@ export const painters: Painter[] = [
     id: "p2",
     name: "Anjali Sharma",
     photo: "https://i.pravatar.cc/300?img=45",
+    service: "painting",
     city: "Coimbatore",
     area: "Gandhipuram",
     skills: ["Interior", "Wood Polish"],
@@ -85,11 +81,12 @@ export const painters: Painter[] = [
     id: "p3",
     name: "Mohammed Irfan",
     photo: "https://i.pravatar.cc/300?img=33",
+    service: "waterproofing",
     city: "Coimbatore",
     area: "Peelamedu",
-    skills: ["Exterior", "Waterproofing"],
+    skills: ["Terrace", "Bathroom", "Walls"],
     about:
-      "Outdoor and waterproofing expert. Your walls stay strong in rain and sun. Safe and tidy work.",
+      "Waterproofing expert. Your terrace and walls stay leak-free in rain and sun. Safe and tidy work.",
     pricePerDay: 1300,
     rating: 4.7,
     reviewCount: 38,
@@ -104,6 +101,7 @@ export const painters: Painter[] = [
     id: "p4",
     name: "Suresh Patil",
     photo: "https://i.pravatar.cc/300?img=8",
+    service: "painting",
     city: "Coimbatore",
     area: "Saravanampatti",
     skills: ["Interior", "Exterior", "Texture"],
@@ -122,11 +120,12 @@ export const painters: Painter[] = [
     id: "p5",
     name: "Lakshmi Nair",
     photo: "https://i.pravatar.cc/300?img=20",
+    service: "deep-cleaning",
     city: "Coimbatore",
     area: "Vadavalli",
-    skills: ["Interior", "Wall Putty", "Wood Polish"],
+    skills: ["Home Deep Clean", "Kitchen", "Bathroom"],
     about:
-      "Neat finishing and on-time work. I treat your home like my own. Many happy families!",
+      "Sparkling deep cleaning for homes and offices. I treat your home like my own. Many happy families!",
     pricePerDay: 950,
     rating: 5.0,
     reviewCount: 51,
@@ -141,10 +140,11 @@ export const painters: Painter[] = [
     id: "p6",
     name: "Deepak Verma",
     photo: "https://i.pravatar.cc/300?img=15",
+    service: "epoxy",
     city: "Tiruppur",
-    skills: ["Exterior", "Texture", "Waterproofing"],
+    skills: ["Factory", "Warehouse", "Showroom"],
     about:
-      "Big building and society work. Strong team, fast work, good safety. Free site visit first.",
+      "Epoxy flooring for factories and warehouses. Strong team, fast work, good safety. Free site visit first.",
     pricePerDay: 1500,
     rating: 4.5,
     reviewCount: 19,
@@ -216,6 +216,7 @@ export const jobs: Job[] = [
   {
     id: "j1",
     title: "Paint my 2 BHK flat",
+    service: "painting",
     type: "Interior",
     city: "Coimbatore",
     area: "2 BHK (~900 sq ft)",
@@ -227,8 +228,9 @@ export const jobs: Job[] = [
   },
   {
     id: "j2",
-    title: "Outside wall + waterproofing",
-    type: "Exterior",
+    title: "Terrace waterproofing before rains",
+    service: "waterproofing",
+    type: "Terrace",
     city: "Coimbatore",
     area: "Independent house",
     budget: 35000,
@@ -239,12 +241,13 @@ export const jobs: Job[] = [
   },
   {
     id: "j3",
-    title: "Office hall texture wall",
-    type: "Texture",
+    title: "Office deep cleaning",
+    service: "deep-cleaning",
+    type: "Office",
     city: "Coimbatore",
-    area: "Office hall (1 wall)",
+    area: "Office hall (~1500 sq ft)",
     budget: 12000,
-    details: "One feature wall with texture design for our office reception.",
+    details: "Full deep cleaning of our office before reopening — floors, glass, washrooms.",
     postedBy: "Vikram",
     postedAt: "2026-05-25",
     status: "open",

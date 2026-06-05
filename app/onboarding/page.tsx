@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { SKILLS, CITIES, areasFor } from "@/lib/data";
+import { CITIES, areasFor } from "@/lib/data";
+import { SERVICES, DEFAULT_SERVICE, skillsForService } from "@/lib/services";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
 import ImageUpload from "@/components/ImageUpload";
 
@@ -18,6 +19,7 @@ export default function Onboarding() {
 
   const [form, setForm] = useState({
     name: "",
+    service: DEFAULT_SERVICE,
     city: CITIES[0],
     area: "",
     about: "",
@@ -56,6 +58,7 @@ export default function Onboarding() {
       setForm((f) => ({
         ...f,
         name: pp?.name ?? prof?.name ?? f.name,
+        service: pp?.service ?? f.service,
         city: pp?.city ?? prof?.city ?? f.city,
         area: pp?.area ?? f.area,
         about: pp?.about ?? f.about,
@@ -95,6 +98,7 @@ export default function Onboarding() {
         {
           user_id: userId,
           name: form.name,
+          service: form.service,
           city: form.city,
           area: form.area || null,
           photo: form.photo,
@@ -162,6 +166,26 @@ export default function Onboarding() {
           <input required value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Ravi Kumar" className="ob-input" />
         </Field>
 
+        <Field label="What service do you offer?">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {SERVICES.map((s) => (
+              <button
+                type="button"
+                key={s.slug}
+                onClick={() => { set("service", s.slug); set("skills", []); }}
+                className={`rounded-xl border p-3 text-center text-sm font-bold transition ${
+                  form.service === s.slug
+                    ? "border-brand-coral bg-orange-50 text-brand-coral"
+                    : "border-orange-100 text-brand-ink/60 hover:bg-orange-50"
+                }`}
+              >
+                <div className="text-2xl">{s.emoji}</div>
+                {s.name}
+              </button>
+            ))}
+          </div>
+        </Field>
+
         <div className="grid grid-cols-2 gap-4">
           <Field label="Your city">
             <select
@@ -186,9 +210,9 @@ export default function Onboarding() {
           </Field>
         )}
 
-        <Field label="What work do you do?">
+        <Field label="What kind of work? (pick all that apply)">
           <div className="flex flex-wrap gap-2">
-            {SKILLS.map((s) => (
+            {skillsForService(form.service).map((s) => (
               <button
                 type="button"
                 key={s}
