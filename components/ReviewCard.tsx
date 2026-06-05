@@ -41,7 +41,7 @@ export default function ReviewCard({ review }: { review: Review }) {
 
       {review.reply && (
         <div className="mt-3 rounded-xl bg-orange-50 p-3 text-sm">
-          <span className="font-bold text-brand-coral">Painter replied: </span>
+          <span className="font-bold text-brand-coral">Pro replied: </span>
           <span className="text-brand-ink/80">{review.reply}</span>
         </div>
       )}

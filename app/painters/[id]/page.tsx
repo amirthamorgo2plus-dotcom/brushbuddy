@@ -53,9 +53,9 @@ export default function PainterProfile() {
     return (
       <div className="mx-auto max-w-6xl px-4 py-20 text-center">
         <div className="text-5xl">😕</div>
-        <p className="mt-3 font-bold text-brand-ink">Painter not found.</p>
+        <p className="mt-3 font-bold text-brand-ink">Pro not found.</p>
         <Link href="/painters" className="mt-2 inline-block font-bold text-brand-coral hover:underline">
-          ← Back to painters
+          ← Back to pros
         </Link>
       </div>
     );
@@ -64,7 +64,7 @@ export default function PainterProfile() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <Link href="/painters" className="text-sm font-semibold text-brand-coral hover:underline">
-        ← Back to painters
+        ← Back to pros
       </Link>
 
       <div className="mt-4 grid gap-8 lg:grid-cols-3">
@@ -154,7 +154,7 @@ export default function PainterProfile() {
             <div className="mt-5 space-y-2 text-sm text-brand-ink/70">
               <p>✓ Free quote before you pay</p>
               <p>✓ Safe payment, money held till done</p>
-              <p>✓ Verified and reviewed painter</p>
+              <p>✓ Verified and reviewed pro</p>
             </div>
           </div>
         </div>

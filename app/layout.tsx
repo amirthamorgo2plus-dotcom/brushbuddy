@@ -4,8 +4,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "BrushBuddy — Find a painter you'll love",
-  description: "Easy, safe and friendly way to find painters near you.",
+  title: "HomeBuddy — Home services you'll love",
+  description: "Painting, deep cleaning, waterproofing & more — trusted local pros near you.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

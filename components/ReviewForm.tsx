@@ -79,7 +79,7 @@ export default function ReviewForm({
       <div className="rounded-xl2 border border-brand-teal/30 bg-teal-50 p-6 text-center">
         <div className="text-4xl">🎉</div>
         <p className="mt-2 font-bold text-brand-ink">Thank you for your review!</p>
-        <p className="text-sm text-brand-ink/60">It helps other people pick the right painter.</p>
+        <p className="text-sm text-brand-ink/60">It helps other people pick the right pro.</p>
       </div>
     );
   }

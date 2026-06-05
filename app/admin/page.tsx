@@ -68,7 +68,7 @@ export default function Admin() {
 
   const pending = painters.filter((p) => !p.verified);
   const stats = [
-    { label: "Painters", value: painters.length, icon: "👷" },
+    { label: "Pros", value: painters.length, icon: "👷" },
     { label: "Open jobs", value: jobs.length, icon: "💼" },
     { label: "Reviews", value: reviews.length, icon: "⭐" },
     { label: "To verify", value: pending.length, icon: "🔎" },
@@ -95,11 +95,11 @@ export default function Admin() {
       </div>
 
       {/* All painters */}
-      <h2 className="mt-8 text-xl font-extrabold text-brand-ink">All painters</h2>
+      <h2 className="mt-8 text-xl font-extrabold text-brand-ink">All pros</h2>
       <div className="mt-4 space-y-3">
         {painters.length === 0 && (
           <p className="rounded-xl2 border border-orange-100 bg-white p-6 text-center text-brand-ink/60">
-            No painters yet. Click "Add a painter" to list your first one.
+            No pros yet. Click "Add a pro" to list your first one.
           </p>
         )}
         {painters.map((p) => (

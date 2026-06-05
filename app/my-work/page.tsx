@@ -42,7 +42,7 @@ export default function MyWork() {
     return (
       <div className="mx-auto max-w-md px-4 py-20 text-center">
         <div className="text-5xl">🎨</div>
-        <h1 className="mt-3 text-2xl font-extrabold text-brand-ink">Set up your painter profile</h1>
+        <h1 className="mt-3 text-2xl font-extrabold text-brand-ink">Set up your pro profile</h1>
         <p className="mt-2 text-brand-ink/60">Create your profile first, then you can send quotes and get bookings.</p>
         <Link href="/onboarding" className="mt-5 inline-block rounded-full bg-gradient-to-r from-brand-coral to-brand-violet px-6 py-3 font-bold text-white shadow-glow">
           Set up profile

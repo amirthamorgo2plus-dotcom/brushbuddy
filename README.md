@@ -1,4 +1,4 @@
-# 🎨 BrushBuddy
+# 🏠 HomeBuddy
 
 A friendly platform to **find painters, read real reviews, and book work** — like a "RedTaxi for painters". Built with Next.js + Tailwind, ready to plug into Supabase.
 

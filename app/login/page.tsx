@@ -51,10 +51,10 @@ export default function Login() {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center px-4 py-16">
       <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-coral to-brand-violet text-3xl shadow-glow">
-        🎨
+        🏠
       </div>
       <h1 className="mt-4 text-2xl font-extrabold text-brand-ink">
-        {mode === "login" ? "Welcome back!" : "Join BrushBuddy"}
+        {mode === "login" ? "Welcome back!" : "Join HomeBuddy"}
       </h1>
       <p className="text-brand-ink/60">
         {mode === "login" ? "Log in to continue." : "Create your free account."}
@@ -91,7 +91,7 @@ export default function Login() {
                       role === r ? "bg-white text-brand-coral shadow" : "text-brand-ink/50"
                     }`}
                   >
-                    {r}
+                    {r === "painter" ? "Pro" : "Customer"}
                   </button>
                 ))}
               </div>

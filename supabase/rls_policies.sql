@@ -1,4 +1,4 @@
--- BrushBuddy — Row Level Security (RLS) policies
+-- HomeBuddy — Row Level Security (RLS) policies
 -- Run this in the Supabase SQL Editor AFTER schema.sql (with RLS enabled).
 -- These rules decide who can read and write each table.
 --

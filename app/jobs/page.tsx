@@ -47,7 +47,7 @@ export default function JobsPage() {
         {live && <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">● Live</span>}
       </div>
       <p className="mt-1 text-brand-ink/60">
-        Painters — here are jobs waiting for you. Send a quote to win the work.
+        Pros — here are jobs waiting for you. Send a quote to win the work.
       </p>
 
       <div className="mt-6 space-y-4">

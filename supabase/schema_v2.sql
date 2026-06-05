@@ -1,4 +1,4 @@
--- BrushBuddy schema v2
+-- HomeBuddy schema v2
 -- WHY: painters may not have email/login. This lets a painter exist WITHOUT an
 -- account (added by an admin). A painter row now has its own id, stores name/city
 -- directly, and links to a login account only IF they have one (user_id, nullable).

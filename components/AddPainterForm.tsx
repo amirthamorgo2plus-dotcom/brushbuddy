@@ -58,7 +58,7 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
         onClick={() => setOpen(true)}
         className="rounded-full bg-gradient-to-r from-brand-coral to-brand-violet px-6 py-3 font-bold text-white shadow-glow transition hover:opacity-90"
       >
-        + Add a painter
+        + Add a pro
       </button>
     );
   }
@@ -66,10 +66,10 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
   return (
     <form onSubmit={handleSubmit} className="rounded-xl2 border border-orange-100 bg-white p-6 shadow-soft">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold text-brand-ink">Add a painter (no account needed)</h3>
+        <h3 className="text-lg font-bold text-brand-ink">Add a pro (no account needed)</h3>
         <button type="button" onClick={() => setOpen(false)} className="text-brand-ink/40 hover:text-brand-ink">✕</button>
       </div>
-      <p className="mt-1 text-sm text-brand-ink/60">For painters you onboard yourself. They appear on the site right away.</p>
+      <p className="mt-1 text-sm text-brand-ink/60">For pros you onboard yourself. They appear on the site right away.</p>
 
       <Field label="Service">
         <select
@@ -139,13 +139,13 @@ export default function AddPainterForm({ onAdded }: { onAdded: () => void }) {
           <ImageUpload value={form.photo} onChange={(v) => set("photo", v)} folder="painters" round />
         </Field>
         <Field label="About">
-          <textarea value={form.about} onChange={(e) => set("about", e.target.value)} rows={2} placeholder="Short note about this painter..." className="ap-input" />
+          <textarea value={form.about} onChange={(e) => set("about", e.target.value)} rows={2} placeholder="Short note about this pro..." className="ap-input" />
         </Field>
       </div>
 
       {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
       <button disabled={busy} className="mt-4 w-full rounded-full bg-gradient-to-r from-brand-coral to-brand-violet py-3 font-bold text-white shadow-glow disabled:opacity-60">
-        {busy ? "Adding..." : "Add painter"}
+        {busy ? "Adding..." : "Add pro"}
       </button>
 
       <style>{`

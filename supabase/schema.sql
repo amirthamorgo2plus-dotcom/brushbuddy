@@ -1,4 +1,4 @@
--- BrushBuddy database schema (Supabase / PostgreSQL)
+-- HomeBuddy database schema (Supabase / PostgreSQL)
 -- Run this in the Supabase SQL editor when you are ready to go live.
 -- Until then the app runs on the sample data in lib/data.ts.
 

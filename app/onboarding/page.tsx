@@ -140,7 +140,7 @@ export default function Onboarding() {
         <div className="text-6xl">🎉</div>
         <h1 className="mt-4 text-3xl font-extrabold text-brand-ink">Your profile is ready!</h1>
         <p className="mt-2 text-brand-ink/60">
-          People can now find you on BrushBuddy. An admin will add your "Verified" badge soon.
+          People can now find you on HomeBuddy. An admin will add your "Verified" badge soon.
         </p>
         <div className="mt-6 flex justify-center gap-3">
           {painterId && (
@@ -158,7 +158,7 @@ export default function Onboarding() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
-      <h1 className="text-3xl font-extrabold text-brand-ink">Set up your painter profile 🎨</h1>
+      <h1 className="text-3xl font-extrabold text-brand-ink">Set up your pro profile 🏠</h1>
       <p className="mt-1 text-brand-ink/60">Fill this once. It helps people pick you.</p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4 rounded-xl2 border border-orange-100 bg-white p-6 shadow-soft">

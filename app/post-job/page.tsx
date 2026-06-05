@@ -68,11 +68,11 @@ export default function PostJob() {
         <div className="text-6xl">🎉</div>
         <h1 className="mt-4 text-3xl font-extrabold text-brand-ink">Job posted!</h1>
         <p className="mt-2 text-brand-ink/60">
-          Painters near you will see it and send quotes soon. We will tell you when they do.
+          Pros near you will see it and send quotes soon. We will tell you when they do.
         </p>
         <div className="mt-6 flex justify-center gap-3">
           <Link href="/painters" className="rounded-full bg-gradient-to-r from-brand-coral to-brand-violet px-6 py-3 font-bold text-white shadow-glow">
-            Browse painters
+            Browse pros
           </Link>
           <Link href="/" className="rounded-full border-2 border-brand-coral px-6 py-3 font-bold text-brand-coral">
             Go home
@@ -163,7 +163,7 @@ export default function PostJob() {
             value={form.details}
             onChange={(e) => set("details", e.target.value)}
             rows={4}
-            placeholder="Tell painters anything they should know..."
+            placeholder="Tell pros anything they should know..."
             className="input"
           />
         </Field>

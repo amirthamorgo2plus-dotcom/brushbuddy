@@ -7,24 +7,24 @@ export default function Footer() {
         <div>
           <div className="flex items-center gap-2 font-extrabold text-lg">
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-coral to-brand-violet text-white">
-              🎨
+              🏠
             </span>
-            BrushBuddy
+            HomeBuddy
           </div>
           <p className="mt-3 text-sm text-brand-ink/60">
-            Find a painter you will love. Easy, safe and friendly.
+            Home services you'll love. Easy, safe and friendly.
           </p>
         </div>
         <div>
           <h4 className="font-bold text-brand-ink">For You</h4>
           <ul className="mt-3 space-y-2 text-sm text-brand-ink/60">
-            <li><Link href="/painters" className="hover:text-brand-coral">Find Painters</Link></li>
+            <li><Link href="/painters" className="hover:text-brand-coral">Find Pros</Link></li>
             <li><Link href="/post-job" className="hover:text-brand-coral">Post a Job</Link></li>
             <li><Link href="/login" className="hover:text-brand-coral">Log in</Link></li>
           </ul>
         </div>
         <div>
-          <h4 className="font-bold text-brand-ink">For Painters</h4>
+          <h4 className="font-bold text-brand-ink">For Pros</h4>
           <ul className="mt-3 space-y-2 text-sm text-brand-ink/60">
             <li><Link href="/dashboard" className="hover:text-brand-coral">My Dashboard</Link></li>
             <li><Link href="/jobs" className="hover:text-brand-coral">Open Jobs</Link></li>
@@ -40,7 +40,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-orange-100 py-5 text-center text-xs text-brand-ink/50">
-        © 2026 BrushBuddy. Made with care.
+        © 2026 HomeBuddy. Made with care.
       </div>
     </footer>
   );

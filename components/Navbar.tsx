@@ -60,10 +60,10 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-2 font-extrabold text-xl">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-coral to-brand-violet text-white shadow-glow">
-            🎨
+            🏠
           </span>
           <span className="bg-gradient-to-r from-brand-coral to-brand-violet bg-clip-text text-transparent">
-            BrushBuddy
+            HomeBuddy
           </span>
         </Link>
 

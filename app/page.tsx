@@ -4,9 +4,9 @@ import { SERVICES } from "@/lib/services";
 import PainterCard from "@/components/PainterCard";
 
 const steps = [
-  { icon: "📝", title: "Tell us your work", text: "Post your job or search painters near you." },
-  { icon: "🤝", title: "Pick your painter", text: "Compare reviews, prices and photos. Chat first." },
-  { icon: "🎨", title: "Get it painted", text: "Pay safely. Then rate your painter for others." },
+  { icon: "📝", title: "Tell us your work", text: "Post your job or search pros near you." },
+  { icon: "🤝", title: "Pick your pro", text: "Compare reviews, prices and photos. Chat first." },
+  { icon: "✨", title: "Get it done", text: "Pay safely. Then rate your pro for others." },
 ];
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:py-24">
           <div>
             <span className="inline-block rounded-full bg-orange-100 px-4 py-1.5 text-sm font-bold text-brand-coral">
-              ⭐ Trusted painters near you
+              ⭐ Trusted pros near you
             </span>
             <h1 className="mt-4 text-4xl font-extrabold leading-tight text-brand-ink md:text-5xl">
               Home services you'll{" "}
@@ -124,7 +124,7 @@ export default function Home() {
       {/* Top painters */}
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-extrabold text-brand-ink">Top rated painters</h2>
+          <h2 className="text-3xl font-extrabold text-brand-ink">Top rated pros</h2>
           <Link href="/painters" className="font-bold text-brand-coral hover:underline">
             See all →
           </Link>
@@ -139,7 +139,7 @@ export default function Home() {
       {/* CTA */}
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="relative overflow-hidden rounded-xl2 bg-gradient-to-r from-brand-coral to-brand-violet p-10 text-center text-white shadow-glow">
-          <h2 className="text-3xl font-extrabold">Are you a painter?</h2>
+          <h2 className="text-3xl font-extrabold">Are you a pro?</h2>
           <p className="mx-auto mt-2 max-w-xl text-white/90">
             Join free. Get more work. Build your name with happy reviews.
           </p>
@@ -147,7 +147,7 @@ export default function Home() {
             href="/onboarding"
             className="mt-6 inline-block rounded-full bg-white px-7 py-3.5 font-bold text-brand-coral transition hover:bg-orange-50"
           >
-            Join as a Painter
+            Join as a Pro
           </Link>
         </div>
       </section>

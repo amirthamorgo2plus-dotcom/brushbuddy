@@ -1,4 +1,4 @@
-# Handover — BrushBuddy (Painter Marketplace)
+# Handover — HomeBuddy (Home Services Marketplace)
 
 > Read `HANDOVER_MASTER.md` (one folder up) first for accounts/billing. This is the technical detail.
 > Last updated: 2026-06-04.
