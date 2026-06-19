@@ -140,7 +140,7 @@ export default function Onboarding() {
         <div className="text-6xl">🎉</div>
         <h1 className="mt-4 text-3xl font-extrabold text-brand-ink">Your profile is ready!</h1>
         <p className="mt-2 text-brand-ink/60">
-          People can now find you on HomeBuddy. An admin will add your "Verified" badge soon.
+          People can now find you on BrushBuddy. An admin will add your "Verified" badge soon.
         </p>
         <div className="mt-6 flex justify-center gap-3">
           {painterId && (

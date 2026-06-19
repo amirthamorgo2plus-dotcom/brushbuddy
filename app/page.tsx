@@ -22,9 +22,9 @@ export default function Home() {
               ⭐ Trusted pros near you
             </span>
             <h1 className="mt-4 text-4xl font-extrabold leading-tight text-brand-ink md:text-5xl">
-              Home services you'll{" "}
+              Your buddy for a{" "}
               <span className="bg-gradient-to-r from-brand-coral to-brand-violet bg-clip-text text-transparent">
-                love
+                better space
               </span>
               .
             </h1>
@@ -64,8 +64,8 @@ export default function Home() {
             <div className="absolute -left-6 -top-6 h-24 w-24 rounded-full bg-brand-sunny/40 blur-2xl" />
             <div className="absolute -bottom-6 -right-6 h-32 w-32 rounded-full bg-brand-teal/30 blur-2xl" />
             <img
-              src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=800"
-              alt="Painter painting a wall with a roller"
+              src="/home-hero.png"
+              alt="BrushBuddy pros painting, cleaning and finishing a space"
               className="relative h-full max-h-[420px] w-full rounded-xl2 object-cover shadow-soft"
             />
           </div>

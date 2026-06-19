@@ -58,13 +58,8 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-orange-100">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="flex items-center gap-2 font-extrabold text-xl">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-coral to-brand-violet text-white shadow-glow">
-            🏠
-          </span>
-          <span className="bg-gradient-to-r from-brand-coral to-brand-violet bg-clip-text text-transparent">
-            HomeBuddy
-          </span>
+        <Link href="/" className="flex items-center gap-2">
+          <img src="/brushbuddy-logo.png" alt="BrushBuddy" className="h-9 w-auto" />
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

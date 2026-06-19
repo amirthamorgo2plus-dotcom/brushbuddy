@@ -54,7 +54,7 @@ export default function Login() {
         🏠
       </div>
       <h1 className="mt-4 text-2xl font-extrabold text-brand-ink">
-        {mode === "login" ? "Welcome back!" : "Join HomeBuddy"}
+        {mode === "login" ? "Welcome back!" : "Join BrushBuddy"}
       </h1>
       <p className="text-brand-ink/60">
         {mode === "login" ? "Log in to continue." : "Create your free account."}

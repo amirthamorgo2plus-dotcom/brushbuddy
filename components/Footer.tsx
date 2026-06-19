@@ -6,13 +6,10 @@ export default function Footer() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-2 font-extrabold text-lg">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-coral to-brand-violet text-white">
-              🏠
-            </span>
-            HomeBuddy
+            <img src="/brushbuddy-logo.png" alt="BrushBuddy" className="h-8 w-auto" />
           </div>
           <p className="mt-3 text-sm text-brand-ink/60">
-            Home services you'll love. Easy, safe and friendly.
+            Your buddy for a better space. Easy, safe and friendly.
           </p>
         </div>
         <div>
