@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
 import { isAdmin } from "@/lib/auth";
+import { fetchPlanRequests, activatePlan, declinePlanRequest } from "@/lib/plans";
 import AddPainterForm from "@/components/AddPainterForm";
 
 type Row = any;
@@ -13,17 +14,20 @@ export default function Admin() {
   const [painters, setPainters] = useState<Row[]>([]);
   const [jobs, setJobs] = useState<Row[]>([]);
   const [reviews, setReviews] = useState<Row[]>([]);
+  const [planRequests, setPlanRequests] = useState<Row[]>([]);
 
   const load = useCallback(async () => {
     if (!supabase) return;
-    const [p, j, r] = await Promise.all([
+    const [p, j, r, pr] = await Promise.all([
       supabase.from("painter_profiles").select("*").order("created_at", { ascending: false }),
       supabase.from("jobs").select("*").eq("status", "open"),
       supabase.from("reviews").select("*").order("created_at", { ascending: false }),
+      fetchPlanRequests(),
     ]);
     setPainters(p.data ?? []);
     setJobs(j.data ?? []);
     setReviews(r.data ?? []);
+    setPlanRequests(pr);
   }, []);
 
   useEffect(() => {
@@ -67,10 +71,11 @@ export default function Admin() {
   }
 
   const pending = painters.filter((p) => !p.verified);
+  const newRequests = planRequests.filter((r) => r.status === "requested");
   const stats = [
     { label: "Pros", value: painters.length, icon: "👷" },
     { label: "Open jobs", value: jobs.length, icon: "💼" },
-    { label: "Reviews", value: reviews.length, icon: "⭐" },
+    { label: "Plan requests", value: newRequests.length, icon: "🛡️" },
     { label: "To verify", value: pending.length, icon: "🔎" },
   ];
 
@@ -91,6 +96,19 @@ export default function Admin() {
             <div className="mt-2 text-2xl font-extrabold text-brand-ink">{s.value}</div>
             <div className="text-sm text-brand-ink/60">{s.label}</div>
           </div>
+        ))}
+      </div>
+
+      {/* Care Plan requests */}
+      <h2 className="mt-8 text-xl font-extrabold text-brand-ink">Care Plan requests</h2>
+      <div className="mt-4 space-y-3">
+        {planRequests.length === 0 && (
+          <p className="rounded-xl2 border border-orange-100 bg-white p-6 text-center text-brand-ink/60">
+            No plan requests yet.
+          </p>
+        )}
+        {planRequests.map((r) => (
+          <PlanRequestRow key={r.id} req={r} onChange={load} />
         ))}
       </div>
 
@@ -148,6 +166,129 @@ export default function Admin() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+function PlanRequestRow({ req, onChange }: { req: Row; onChange: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [price, setPrice] = useState("");
+  const [visits, setVisits] = useState("4");
+  const today = new Date().toISOString().slice(0, 10);
+  const [startsOn, setStartsOn] = useState(today);
+
+  const isNew = req.status === "requested";
+
+  const badge =
+    req.status === "active"
+      ? <span className="rounded-full bg-brand-teal px-2 py-0.5 text-xs font-bold text-white">Active</span>
+      : req.status === "declined"
+      ? <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-bold text-red-600">Declined</span>
+      : <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">New</span>;
+
+  async function activate() {
+    if (!price) return;
+    setBusy(true);
+    try {
+      await activatePlan(req, {
+        yearlyPrice: Number(price),
+        visitsPerYear: Number(visits),
+        startsOn,
+      });
+      onChange();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function decline() {
+    setBusy(true);
+    try {
+      await declinePlanRequest(req.id);
+      onChange();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="rounded-xl2 border border-orange-100 bg-white p-4 shadow-soft">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="font-bold text-brand-ink">
+            {req.property_kind} {badge}{" "}
+            <span className="text-sm font-normal text-brand-ink/50">· {req.segment}</span>
+          </p>
+          <p className="mt-1 text-sm text-brand-ink/70">
+            {req.size_note || "—"} · {(req.services ?? []).join(", ") || "no services"}
+          </p>
+          <p className="text-sm text-brand-ink/60">
+            📍 {req.city || "—"}{req.area ? `, ${req.area}` : ""} · 👤 {req.contact_name || "—"}
+            {req.phone ? ` · 📞 ${req.phone}` : ""}
+          </p>
+          {req.notes && <p className="mt-1 text-sm text-brand-ink/50 italic">"{req.notes}"</p>}
+        </div>
+        {isNew && (
+          <div className="flex gap-2">
+            <button
+              onClick={() => setOpen((o) => !o)}
+              className="rounded-full bg-gradient-to-r from-brand-coral to-brand-violet px-4 py-2 text-sm font-bold text-white shadow-glow"
+            >
+              {open ? "Close" : "Quote & activate"}
+            </button>
+            <button
+              onClick={decline}
+              disabled={busy}
+              className="rounded-full border border-red-200 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 disabled:opacity-60"
+            >
+              Decline
+            </button>
+          </div>
+        )}
+      </div>
+
+      {isNew && open && (
+        <div className="mt-4 grid gap-3 rounded-xl border border-orange-100 bg-orange-50/40 p-4 sm:grid-cols-4">
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold text-brand-ink/70">Yearly price (₹)</span>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="e.g. 24000"
+              className="w-full rounded-lg border border-orange-200 px-3 py-2 outline-none focus:border-brand-coral"
+            />
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold text-brand-ink/70">Visits / year</span>
+            <input
+              type="number"
+              value={visits}
+              onChange={(e) => setVisits(e.target.value)}
+              className="w-full rounded-lg border border-orange-200 px-3 py-2 outline-none focus:border-brand-coral"
+            />
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold text-brand-ink/70">Starts on</span>
+            <input
+              type="date"
+              value={startsOn}
+              onChange={(e) => setStartsOn(e.target.value)}
+              className="w-full rounded-lg border border-orange-200 px-3 py-2 outline-none focus:border-brand-coral"
+            />
+          </label>
+          <div className="flex items-end">
+            <button
+              onClick={activate}
+              disabled={busy || !price}
+              className="w-full rounded-full bg-brand-teal px-4 py-2 text-sm font-bold text-white disabled:opacity-60"
+            >
+              {busy ? "Saving..." : "Create plan"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

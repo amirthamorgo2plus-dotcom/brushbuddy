@@ -87,3 +87,55 @@ export function segmentFor(kind: PropertyKind): "home" | "business" {
     ? "home"
     : "business";
 }
+
+// ---------------------------------------------------------------------------
+// ADMIN side: review plan requests and turn them into active care plans.
+// ---------------------------------------------------------------------------
+
+// All plan requests, newest first (admin uses service_role / admin role).
+export async function fetchPlanRequests() {
+  if (!supabase) return [];
+  const { data } = await supabase
+    .from("plan_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+  return data ?? [];
+}
+
+// Quote a request and activate it as a care plan in one step.
+// Creates a care_plans row and marks the request "active".
+export async function activatePlan(
+  request: any,
+  quote: { yearlyPrice: number; visitsPerYear: number; startsOn: string }
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase not connected");
+
+  const start = new Date(quote.startsOn);
+  const end = new Date(start);
+  end.setFullYear(end.getFullYear() + 1);
+  const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+  const { error: planErr } = await supabase.from("care_plans").insert({
+    request_id: request.id,
+    customer_id: request.customer_id ?? null,
+    title: `${request.property_kind} — Annual Care`,
+    services: request.services ?? [],
+    yearly_price: quote.yearlyPrice,
+    visits_per_year: quote.visitsPerYear,
+    starts_on: iso(start),
+    ends_on: iso(end),
+    status: "active",
+  });
+  if (planErr) throw planErr;
+
+  const { error: reqErr } = await supabase
+    .from("plan_requests")
+    .update({ status: "active" })
+    .eq("id", request.id);
+  if (reqErr) throw reqErr;
+}
+
+export async function declinePlanRequest(id: string): Promise<void> {
+  if (!supabase) return;
+  await supabase.from("plan_requests").update({ status: "declined" }).eq("id", id);
+}
