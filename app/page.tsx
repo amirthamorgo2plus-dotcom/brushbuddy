@@ -98,6 +98,55 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Care Plans highlight */}
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <div className="relative overflow-hidden rounded-xl2 border border-orange-100 bg-gradient-to-br from-orange-50 to-violet-50 p-8 shadow-soft md:p-10">
+          <div className="grid items-center gap-8 md:grid-cols-2">
+            <div>
+              <span className="inline-block rounded-full bg-white px-4 py-1.5 text-sm font-bold text-brand-coral shadow-soft">
+                🛡️ New — BrushBuddy Care Plans
+              </span>
+              <h2 className="mt-4 text-3xl font-extrabold text-brand-ink">
+                One yearly plan for your whole space
+              </h2>
+              <p className="mt-3 text-brand-ink/70">
+                Don't wait for things to break. Subscribe once a year and we look after your
+                home or business on a planned schedule — with protection on covered work.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  href="/plans"
+                  className="rounded-full bg-gradient-to-r from-brand-coral to-brand-violet px-6 py-3 font-bold text-white shadow-glow transition hover:opacity-90"
+                >
+                  Explore Care Plans
+                </Link>
+                <Link
+                  href="/plans/request"
+                  className="rounded-full border-2 border-brand-coral px-6 py-3 font-bold text-brand-coral transition hover:bg-white"
+                >
+                  Get a custom quote
+                </Link>
+              </div>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-3">
+              {[
+                ["🧰", "All services"],
+                ["📅", "Scheduled"],
+                ["🛡️", "Protected"],
+              ].map(([icon, label]) => (
+                <div
+                  key={label}
+                  className="rounded-xl2 border border-orange-100 bg-white p-4 text-center shadow-soft"
+                >
+                  <div className="text-3xl">{icon}</div>
+                  <div className="mt-1 text-sm font-bold text-brand-ink">{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How it works */}
       <section className="mx-auto max-w-6xl px-4 py-12">
         <h2 className="text-center text-3xl font-extrabold text-brand-ink">
