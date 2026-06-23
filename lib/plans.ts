@@ -139,3 +139,36 @@ export async function declinePlanRequest(id: string): Promise<void> {
   if (!supabase) return;
   await supabase.from("plan_requests").update({ status: "declined" }).eq("id", id);
 }
+
+// ---------------------------------------------------------------------------
+// MEMBER side: a logged-in customer's own plans, visits and claims.
+// ---------------------------------------------------------------------------
+
+// The logged-in customer's care plans, each with its visits and claims.
+export async function fetchMyPlans() {
+  if (!supabase) return [];
+  const { data: s } = await supabase.auth.getSession();
+  if (!s.session) return [];
+  const { data } = await supabase
+    .from("care_plans")
+    .select("*, plan_visits(*), plan_claims(*)")
+    .eq("customer_id", s.session.user.id)
+    .order("created_at", { ascending: false });
+  return data ?? [];
+}
+
+// Member raises a protection claim on one of their plans.
+export async function raiseClaim(
+  planId: string,
+  service: string,
+  description: string
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase not connected");
+  const { error } = await supabase.from("plan_claims").insert({
+    plan_id: planId,
+    service,
+    description,
+    status: "open",
+  });
+  if (error) throw error;
+}
