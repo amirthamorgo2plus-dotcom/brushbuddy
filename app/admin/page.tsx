@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
 import { isAdmin } from "@/lib/auth";
-import { fetchPlanRequests, activatePlan, declinePlanRequest } from "@/lib/plans";
+import { fetchPlanRequests, activatePlan, declinePlanRequest, findCustomerIdByEmail } from "@/lib/plans";
 import AddPainterForm from "@/components/AddPainterForm";
 
 type Row = any;
@@ -177,6 +177,8 @@ function PlanRequestRow({ req, onChange }: { req: Row; onChange: () => void }) {
   const [visits, setVisits] = useState("4");
   const today = new Date().toISOString().slice(0, 10);
   const [startsOn, setStartsOn] = useState(today);
+  const [email, setEmail] = useState("");
+  const [err, setErr] = useState("");
 
   const isNew = req.status === "requested";
 
@@ -189,14 +191,26 @@ function PlanRequestRow({ req, onChange }: { req: Row; onChange: () => void }) {
 
   async function activate() {
     if (!price) return;
+    setErr("");
     setBusy(true);
     try {
+      let customerId: string | null = req.customer_id ?? null;
+      if (email.trim()) {
+        customerId = await findCustomerIdByEmail(email.trim());
+        if (!customerId) {
+          setErr(`No login account found for ${email.trim()}. Create the account first, then activate.`);
+          return;
+        }
+      }
       await activatePlan(req, {
         yearlyPrice: Number(price),
         visitsPerYear: Number(visits),
         startsOn,
+        customerId,
       });
       onChange();
+    } catch (e: any) {
+      setErr(e.message ?? "Could not activate. Try again.");
     } finally {
       setBusy(false);
     }
@@ -250,6 +264,21 @@ function PlanRequestRow({ req, onChange }: { req: Row; onChange: () => void }) {
 
       {isNew && open && (
         <div className="mt-4 grid gap-3 rounded-xl border border-orange-100 bg-orange-50/40 p-4 sm:grid-cols-4">
+          <label className="block sm:col-span-4">
+            <span className="mb-1 block text-xs font-semibold text-brand-ink/70">
+              Customer login email{" "}
+              <span className="font-normal text-brand-ink/40">
+                — the account you created for them (leave blank to skip linking)
+              </span>
+            </span>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={req.customer_id ? "Already linked — optional" : "customer@example.com"}
+              className="w-full rounded-lg border border-orange-200 px-3 py-2 outline-none focus:border-brand-coral"
+            />
+          </label>
           <label className="block">
             <span className="mb-1 block text-xs font-semibold text-brand-ink/70">Yearly price (₹)</span>
             <input
@@ -287,6 +316,7 @@ function PlanRequestRow({ req, onChange }: { req: Row; onChange: () => void }) {
               {busy ? "Saving..." : "Create plan"}
             </button>
           </div>
+          {err && <p className="text-sm text-red-500 sm:col-span-4">{err}</p>}
         </div>
       )}
     </div>

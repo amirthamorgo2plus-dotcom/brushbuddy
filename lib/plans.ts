@@ -102,11 +102,27 @@ export async function fetchPlanRequests() {
   return data ?? [];
 }
 
+// Look up a customer's login user id by email (admin-only DB function).
+// Returns null if no account exists for that email.
+export async function findCustomerIdByEmail(email: string): Promise<string | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase.rpc("admin_find_user_id", { p_email: email });
+  if (error) throw error;
+  return (data as string) ?? null;
+}
+
 // Quote a request and activate it as a care plan in one step.
 // Creates a care_plans row and marks the request "active".
+// customerId (optional) links the plan to a specific login account so it
+// appears in that customer's /my-plan.
 export async function activatePlan(
   request: any,
-  quote: { yearlyPrice: number; visitsPerYear: number; startsOn: string }
+  quote: {
+    yearlyPrice: number;
+    visitsPerYear: number;
+    startsOn: string;
+    customerId?: string | null;
+  }
 ): Promise<void> {
   if (!supabase) throw new Error("Supabase not connected");
 
@@ -117,7 +133,7 @@ export async function activatePlan(
 
   const { error: planErr } = await supabase.from("care_plans").insert({
     request_id: request.id,
-    customer_id: request.customer_id ?? null,
+    customer_id: quote.customerId ?? request.customer_id ?? null,
     title: `${request.property_kind} — Annual Care`,
     services: request.services ?? [],
     yearly_price: quote.yearlyPrice,
