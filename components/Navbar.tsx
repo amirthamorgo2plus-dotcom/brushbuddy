@@ -47,6 +47,7 @@ export default function Navbar() {
       links.push({ href: "/my-jobs", label: "My Jobs" });
       links.push({ href: "/my-plan", label: "My Plan" });
     }
+    links.push({ href: "/settings/modules", label: "Modules" });
     if (role === "admin") links.push({ href: "/admin", label: "Admin" });
   } else {
     links.push({ href: "/dashboard", label: "Join as a Pro" });
