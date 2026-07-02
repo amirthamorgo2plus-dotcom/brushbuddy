@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Plan,
@@ -17,6 +17,14 @@ import { fetchAccountContext, AccountContext } from "@/lib/account";
 const PLANS: Plan[] = ["free", "starter", "premium"];
 
 export default function Upgrade() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-5xl px-4 py-20 text-center text-brand-ink/60">Loading…</div>}>
+      <UpgradeInner />
+    </Suspense>
+  );
+}
+
+function UpgradeInner() {
   const params = useSearchParams();
   const need = params.get("need") as Plan | null;
   const [ctx, setCtx] = useState<AccountContext | null>(null);
