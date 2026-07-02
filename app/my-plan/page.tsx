@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
 import { fetchMyPlans, raiseClaim } from "@/lib/plans";
+import { fetchAccountContext } from "@/lib/account";
+import { isEntitled } from "@/lib/entitlements";
 import { serviceName } from "@/lib/services";
 
 export default function MyPlan() {
@@ -18,8 +20,14 @@ export default function MyPlan() {
 
   useEffect(() => {
     if (!isSupabaseReady || !supabase) { setReady(false); return; }
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       if (!data.session) { router.push("/login"); return; }
+      // Plan gate: My Plan dashboard is a Starter+ module (founding → premium).
+      const ctx = await fetchAccountContext();
+      if (!isEntitled(ctx.entitlements, "my_plan")) {
+        router.push("/upgrade?need=starter");
+        return;
+      }
       setReady(true);
       load();
     });
