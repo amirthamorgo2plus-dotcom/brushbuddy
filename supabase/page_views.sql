@@ -8,6 +8,9 @@ create table if not exists page_views (
   primary key (path, viewed_at)
 );
 
+-- index for the external dashboard (charts/trends by date)
+create index if not exists page_views_date_idx on page_views (viewed_at desc);
+
 alter table page_views enable row level security;
 
 drop policy if exists "service role only" on page_views;
