@@ -5,13 +5,17 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: NextRequest) {
   try {
-    const { path } = await req.json();
+    const { path, visitorId } = await req.json();
     if (typeof path !== "string" || !path) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
     if (supabaseAdmin) {
       // atomic insert-or-increment via SQL function (see supabase/page_views.sql)
       await supabaseAdmin.rpc("increment_page_view", { p_path: path });
+      // record the unique visitor for today (see supabase/visitors.sql)
+      if (typeof visitorId === "string" && visitorId) {
+        await supabaseAdmin.rpc("record_visitor", { p_visitor_id: visitorId });
+      }
     }
     return NextResponse.json({ ok: true });
   } catch {
