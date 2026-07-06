@@ -46,6 +46,12 @@ export default function Home() {
                 Post a Job
               </Link>
             </div>
+            <Link
+              href="/demo"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-brand-coral hover:underline"
+            >
+              🔍 Take the live demo — no login
+            </Link>
             <div className="mt-8 flex gap-8">
               {[
                 ["500+", "Happy homes"],
