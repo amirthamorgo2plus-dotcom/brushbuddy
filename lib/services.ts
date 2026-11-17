@@ -8,6 +8,7 @@ export type Service = {
   tagline: string;
   gradient: string; // tailwind gradient classes
   skills: string[];
+  live?: boolean; // bookable now; everything else shows as "Coming soon"
 };
 
 export const SERVICES: Service[] = [
@@ -25,6 +26,7 @@ export const SERVICES: Service[] = [
     emoji: "🧼",
     tagline: "Homes, offices, kitchens",
     gradient: "from-brand-teal to-brand-sky",
+    live: true,
     skills: ["Home Deep Clean", "Kitchen", "Bathroom", "Sofa & Carpet", "Office", "Post-construction"],
   },
   {
@@ -46,6 +48,9 @@ export const SERVICES: Service[] = [
 ];
 
 export const DEFAULT_SERVICE = "painting";
+
+export const LIVE_SERVICES = SERVICES.filter((s) => s.live);
+export const COMING_SOON_SERVICES = SERVICES.filter((s) => !s.live);
 
 export function getService(slug?: string): Service | undefined {
   return SERVICES.find((s) => s.slug === slug);

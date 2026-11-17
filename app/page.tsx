@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { painters } from "@/lib/data";
-import { SERVICES } from "@/lib/services";
+import ServiceGrid from "@/components/ServiceGrid";
 import PainterCard from "@/components/PainterCard";
 
 const steps = [
@@ -83,24 +83,9 @@ export default function Home() {
         <h2 className="text-center text-3xl font-extrabold text-brand-ink">
           What do you need today?
         </h2>
-        <p className="mt-2 text-center text-brand-ink/60">Pick a service to get started.</p>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICES.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/painters?service=${s.slug}`}
-              className="group rounded-xl2 border border-orange-100 bg-white p-6 text-center shadow-soft transition hover:-translate-y-1 hover:shadow-glow"
-            >
-              <div className={`mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br ${s.gradient} text-3xl shadow-glow`}>
-                {s.emoji}
-              </div>
-              <h3 className="mt-4 text-lg font-bold text-brand-ink">{s.name}</h3>
-              <p className="mt-1 text-sm text-brand-ink/60">{s.tagline}</p>
-              <span className="mt-3 inline-block text-sm font-bold text-brand-coral opacity-0 transition group-hover:opacity-100">
-                Find pros →
-              </span>
-            </Link>
-          ))}
+        <p className="mt-2 text-center text-brand-ink/60">Deep cleaning is live — more services coming soon.</p>
+        <div className="mt-10">
+          <ServiceGrid />
         </div>
       </section>
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { painters, reviews } from "@/lib/data";
-import { SERVICES } from "@/lib/services";
+import ServiceGrid from "@/components/ServiceGrid";
 import PainterCard from "@/components/PainterCard";
 
 const WA = "https://wa.me/918220980134";
@@ -120,21 +120,9 @@ export default function DemoPage() {
       {/* Services */}
       <section className="mx-auto max-w-6xl px-4 py-6">
         <h2 className="text-2xl font-extrabold text-brand-ink">All under one roof</h2>
-        <p className="mt-1 text-brand-ink/60">Pick a service — it opens the live directory filtered for you.</p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICES.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/painters?service=${s.slug}`}
-              className="group rounded-xl2 border border-orange-100 bg-white p-6 text-center shadow-soft transition hover:-translate-y-1 hover:shadow-glow"
-            >
-              <div className={`mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br ${s.gradient} text-3xl shadow-glow`}>
-                {s.emoji}
-              </div>
-              <h3 className="mt-4 text-lg font-bold text-brand-ink">{s.name}</h3>
-              <p className="mt-1 text-sm text-brand-ink/60">{s.tagline}</p>
-            </Link>
-          ))}
+        <p className="mt-1 text-brand-ink/60">Deep cleaning is open for booking — the rest are on the way.</p>
+        <div className="mt-6">
+          <ServiceGrid />
         </div>
       </section>
 

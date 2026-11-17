@@ -86,7 +86,15 @@ export default function Admin() {
           <h1 className="text-3xl font-extrabold text-brand-ink">Admin</h1>
           <p className="mt-1 text-brand-ink/60">Keep the platform safe and friendly.</p>
         </div>
-        <AddPainterForm onAdded={load} />
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/admin/bookings"
+            className="rounded-full bg-brand-teal px-5 py-2.5 text-sm font-bold text-white shadow-soft hover:opacity-90"
+          >
+            🧼 Cleaning bookings
+          </Link>
+          <AddPainterForm onAdded={load} />
+        </div>
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">

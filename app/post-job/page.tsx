@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CITIES } from "@/lib/data";
-import { SERVICES, DEFAULT_SERVICE, skillsForService } from "@/lib/services";
+import { SERVICES, LIVE_SERVICES, skillsForService } from "@/lib/services";
 import { supabase, isSupabaseReady } from "@/lib/supabaseClient";
 
 export default function PostJob() {
@@ -14,8 +14,8 @@ export default function PostJob() {
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     title: "",
-    service: DEFAULT_SERVICE,
-    type: skillsForService(DEFAULT_SERVICE)[0],
+    service: LIVE_SERVICES[0].slug,
+    type: skillsForService(LIVE_SERVICES[0].slug)[0],
     city: CITIES[0],
     area: "",
     budget: "",
@@ -86,6 +86,12 @@ export default function PostJob() {
     <div className="mx-auto max-w-xl px-4 py-10">
       <h1 className="text-3xl font-extrabold text-brand-ink">Post a Job</h1>
       <p className="mt-1 text-brand-ink/60">Tell us what you need. It's free!</p>
+      <Link
+        href="/book"
+        className="mt-4 block rounded-xl2 border border-brand-teal/30 bg-teal-50 p-4 text-sm font-semibold text-brand-ink/80 hover:bg-teal-100"
+      >
+        🧼 Need a deep clean? <span className="font-bold text-brand-teal">Pick a free slot and book instantly →</span>
+      </Link>
 
       <form
         onSubmit={handleSubmit}
@@ -97,15 +103,19 @@ export default function PostJob() {
               <button
                 type="button"
                 key={s.slug}
+                disabled={!s.live}
                 onClick={() => setForm({ ...form, service: s.slug, type: skillsForService(s.slug)[0] })}
                 className={`rounded-xl border p-3 text-center text-sm font-bold transition ${
                   form.service === s.slug
                     ? "border-brand-coral bg-orange-50 text-brand-coral"
-                    : "border-orange-100 text-brand-ink/60 hover:bg-orange-50"
+                    : s.live
+                    ? "border-orange-100 text-brand-ink/60 hover:bg-orange-50"
+                    : "cursor-not-allowed border-dashed border-orange-100 text-brand-ink/30"
                 }`}
               >
-                <div className="text-2xl">{s.emoji}</div>
+                <div className={`text-2xl ${s.live ? "" : "opacity-40"}`}>{s.emoji}</div>
                 {s.name}
+                {!s.live && <div className="text-[10px] font-bold uppercase text-amber-600">Soon</div>}
               </button>
             ))}
           </div>

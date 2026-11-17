@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { signOut } from "@/lib/auth";
 
 const baseLinks = [
+  { href: "/book", label: "Book Cleaning" },
   { href: "/demo", label: "Live Demo" },
   { href: "/plans", label: "Care Plans" },
   { href: "/painters", label: "Find Pros" },
