@@ -13,8 +13,10 @@ A painter marketplace web app (RedTaxi-style) — connects customers with painte
 - Currently in **sample-data mode** until Supabase is fully wired — meaning some screens use mock
   data rather than the live DB. A developer finishing this connects the Supabase queries.
 
-## Where it's deployed  ⬜ FILL IN
-- Hosting: likely **Vercel** + **Supabase**. Record exact URLs/logins in the master doc.
+## Where it's deployed
+- Live site: https://brushbuddy-six.vercel.app (Vercel, auto-deploys from `main`) + Supabase.
+- Shareable Deep Cleaning booking link: https://brushbuddy-six.vercel.app/book
+- Record logins in the master doc.
 
 ## How to run locally (Windows PowerShell)
 ```powershell
